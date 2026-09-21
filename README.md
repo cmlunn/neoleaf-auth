@@ -20,9 +20,9 @@ This is a direct-upload setup: commits to this repository do not automatically d
 
 Cloudflare Pages project `neoleaf-auth` is deployed at `https://neoleaf-auth.pages.dev`. Its association endpoint was verified to return HTTP 200 over HTTPS, Content-Type `application/json`, and the expected True Golf app identifier.
 
-GoDaddy DNS now points `auth.neoleaf.studio` to `neoleaf-auth.pages.dev`. The authoritative nameserver and public resolvers 1.1.1.1 and 8.8.8.8 confirmed the new CNAME. Cloudflare custom-domain verification has been initiated; custom-domain HTTPS and Apple association lookup remain pending.
+GoDaddy DNS now points `auth.neoleaf.studio` to `neoleaf-auth.pages.dev`. The authoritative nameserver and public resolvers 1.1.1.1 and 8.8.8.8 confirmed the new CNAME. Cloudflare serves the custom domain with valid HTTPS, HTTP 200, and Content-Type `application/json`. Apple's association CDN also returned HTTP 200 with the exact expected JSON and `Apple-From: https://auth.neoleaf.studio/.well-known/apple-app-site-association` on 21 September 2026. Some local DNS caches may temporarily retain the old GitHub destination until the previous one-hour TTL expires.
 
-The former GitHub Pages deployment is temporarily retained for cached DNS during the transition. `CNAME` and `.nojekyll` support that fallback. GitHub Pages serves the extensionless file as `application/octet-stream` and does not support a per-file override.
+The GitHub custom-domain binding and `CNAME` file have been removed. This repository keeps the source files; Cloudflare Pages is the production host. `.nojekyll` is harmless legacy configuration for the default GitHub Pages URL.
 
 ## Adding apps
 

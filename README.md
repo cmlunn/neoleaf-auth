@@ -19,3 +19,12 @@ The association endpoint must return HTTP 200 directly over HTTPS, without redir
 Add each approved app's exact application identifier to `webcredentials.apps`. Each app must configure its associated-domain entitlement and passkey relying-party ID consistently with its authentication backend. Publishing this file alone does not enable passkeys or merge accounts across separate Supabase projects. A shared relying-party ID defines a shared credential scope; choose per-app relying-party subdomains if credential isolation is required.
 
 Never commit credentials, signing keys, Supabase secrets, or user data here.
+
+## Deployment verification (21 September 2026)
+
+- GitHub Pages built successfully and the GoDaddy CNAME resolves to `cmlunn.github.io`.
+- The association endpoint returned HTTP 200 with the expected JSON over HTTP.
+- HTTPS certificate provisioning was still pending at the initial check; HTTPS is required before app use.
+- GitHub Pages serves this extensionless file as `application/octet-stream`. Apple documents `application/json`, and Pages does not support per-file MIME overrides. Apple acceptance remains unverified; use a host or proxy with configurable response headers if needed. Do not treat file publication as completed passkey integration.
+
+References: [Apple association files](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html), [GitHub Pages MIME types](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site#mime-types-on-github-pages).

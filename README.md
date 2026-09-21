@@ -18,7 +18,11 @@ This is a direct-upload setup: commits to this repository do not automatically d
 
 ## Migration status
 
-Cloudflare deployment is pending account email verification. GoDaddy DNS still points to `cmlunn.github.io`, and the existing GitHub Pages deployment remains in place until Cloudflare is ready. `CNAME` and `.nojekyll` currently support that temporary GitHub Pages deployment. GitHub Pages serves the extensionless file as `application/octet-stream` and does not support a per-file override.
+Cloudflare Pages project `neoleaf-auth` is deployed at `https://neoleaf-auth.pages.dev`. Its association endpoint was verified to return HTTP 200 over HTTPS, Content-Type `application/json`, and the expected True Golf app identifier.
+
+GoDaddy DNS now points `auth.neoleaf.studio` to `neoleaf-auth.pages.dev`. The authoritative nameserver and public resolvers 1.1.1.1 and 8.8.8.8 confirmed the new CNAME. Cloudflare custom-domain verification has been initiated; custom-domain HTTPS and Apple association lookup remain pending.
+
+The former GitHub Pages deployment is temporarily retained for cached DNS during the transition. `CNAME` and `.nojekyll` support that fallback. GitHub Pages serves the extensionless file as `application/octet-stream` and does not support a per-file override.
 
 ## Adding apps
 

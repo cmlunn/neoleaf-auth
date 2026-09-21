@@ -1,30 +1,29 @@
 # Neoleaf app associations
 
-Public static files for `https://auth.neoleaf.studio`, hosted with GitHub Pages.
+Public association files for `https://auth.neoleaf.studio`.
 
-## Published endpoint
+## Endpoint
 
 `https://auth.neoleaf.studio/.well-known/apple-app-site-association`
 
-The `webcredentials.apps` list currently contains True Golf: `WDF3M2WTXZ.dev.neoleaf.truegolf`, from its Xcode signing configuration. Confirm the signed application identifier if its App ID prefix differs from its team ID.
+The `webcredentials.apps` list contains True Golf: `WDF3M2WTXZ.dev.neoleaf.truegolf`, from its Xcode signing configuration. Confirm the signed application identifier if its App ID prefix differs from its team ID.
 
-## Hosting
+## Cloudflare Pages deployment
 
-Publish the `main` branch root through GitHub Pages. `.nojekyll` preserves the `.well-known` directory. `CNAME` configures `auth.neoleaf.studio`; its DNS CNAME must point to `cmlunn.github.io`. Enable Enforce HTTPS after GitHub provisions the certificate.
+Upload `.well-known/apple-app-site-association`, `_headers`, and `index.html` together, retaining their paths. `_headers` sets the association endpoint's Content-Type to `application/json` and a five-minute cache lifetime. Register `auth.neoleaf.studio` as a custom domain in Pages, then replace the GoDaddy `auth` CNAME with the exact Pages hostname assigned to this project.
 
-The association endpoint must return HTTP 200 directly over HTTPS, without redirects. Do not add a `.json` extension to the filename.
+The endpoint must return HTTP 200 directly over valid HTTPS with the expected JSON and no redirect. Verify the public endpoint and Apple's association lookup before relying on it in an app.
+
+This is a direct-upload setup: commits to this repository do not automatically deploy to Cloudflare. Upload a fresh bundle when changing app identifiers.
+
+## Migration status
+
+Cloudflare deployment is pending account email verification. GoDaddy DNS still points to `cmlunn.github.io`, and the existing GitHub Pages deployment remains in place until Cloudflare is ready. `CNAME` and `.nojekyll` currently support that temporary GitHub Pages deployment. GitHub Pages serves the extensionless file as `application/octet-stream` and does not support a per-file override.
 
 ## Adding apps
 
-Add each approved app's exact application identifier to `webcredentials.apps`. Each app must configure its associated-domain entitlement and passkey relying-party ID consistently with its authentication backend. Publishing this file alone does not enable passkeys or merge accounts across separate Supabase projects. A shared relying-party ID defines a shared credential scope; choose per-app relying-party subdomains if credential isolation is required.
+Add each approved app's exact application identifier to `webcredentials.apps`. Configure the associated-domain entitlement and passkey relying-party ID consistently with its authentication backend. Publishing this file does not enable passkeys or merge accounts across Supabase projects. A shared relying-party ID defines a shared credential scope; use per-app relying-party subdomains if credential isolation is required.
+
+The host can change without changing the domain or path. Prepare HTTPS on the replacement host before switching DNS, and retain the old host during DNS propagation.
 
 Never commit credentials, signing keys, Supabase secrets, or user data here.
-
-## Deployment verification (21 September 2026)
-
-- GitHub Pages built successfully and the GoDaddy CNAME resolves to `cmlunn.github.io`.
-- The association endpoint returned HTTP 200 with the expected JSON over HTTP.
-- HTTPS certificate provisioning was still pending at the initial check; HTTPS is required before app use.
-- GitHub Pages serves this extensionless file as `application/octet-stream`. Apple documents `application/json`, and Pages does not support per-file MIME overrides. Apple acceptance remains unverified; use a host or proxy with configurable response headers if needed. Do not treat file publication as completed passkey integration.
-
-References: [Apple association files](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html), [GitHub Pages MIME types](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site#mime-types-on-github-pages).
